@@ -1,0 +1,33 @@
+﻿@model TaskManager.Reports.Abstractions.Dtos.ProjectProgressDto
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Tiến độ: @Model.ProjectName</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="chart_pie_@Model.ProjectId"></canvas>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item">Completed: <b>@Model.CompletedCount</b></li>
+                    <li class="list-group-item">Pending: <b>@Model.PendingCount</b></li>
+                    <li class="list-group-item">Total: <b>@(Model.TotalCount)</b></li>
+                    <li class="list-group-item">% Done: <b>@Model.CompletedPercent.ToString("0.##")%</b></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+(function(){
+  const ctx = document.getElementById('chart_pie_@Model.ProjectId').getContext('2d');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: ['Completed','Pending'],
+      datasets: [{ data: [@Model.CompletedCount, @Model.PendingCount] }]
+    }
+  });
+})();
+</script>
